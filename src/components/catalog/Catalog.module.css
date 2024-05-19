@@ -1,0 +1,10 @@
+.WrapPage{
+    /* background-color: #2E3345; */
+    padding: 60px;
+}
+
+.WrapListProduct{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+}

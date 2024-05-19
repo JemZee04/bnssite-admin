@@ -375,7 +375,7 @@ export type Цвет = {
   name?: string;
   hex?: string;
 };
-export type ФильтрыИСортировка = {
+export type FiltersAndSorting = {
   categories?: КатегорияТоваров[];
   sizes?: Размер[];
   colors?: Цвет[];
@@ -384,7 +384,7 @@ export type ФильтрыИСортировка = {
 };
 export type СтраницаКаталогаТоваров = {
   headerMenu?: MenuItem[];
-  filters?: ФильтрыИСортировка;
+  filters?: FiltersAndSorting;
   productList?: ProductInList[];
 };
 export type Product = {
