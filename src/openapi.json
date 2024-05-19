@@ -1,0 +1,1717 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Сервис content App",
+    "description": "Сервис для работы с контентом",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:7070/api/v1/bns",
+      "description": "Staging server V1"
+    }
+  ],
+  "paths": {
+    "/health/check": {
+      "get": {
+        "summary": "Проверка жизнеспособности сервиса",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/content_v1HealthResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/runtimeError"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Health"
+        ]
+      }
+    },
+    "/main-page": {
+      "get": {
+        "summary": "Главная страница",
+        "responses": {
+          "200": {
+            "description": "Метод успешно отработал",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/mainPage"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          }
+        },
+        "tags": [
+          "Page"
+        ]
+      }
+    },
+    "/catalog-page": {
+      "get": {
+        "summary": "Каталог товаров",
+        "parameters": [
+          {
+            "name": "gender",
+            "in": "query",
+            "description": "Значение для фильтрации по категориям",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categories",
+            "in": "query",
+            "description": "Значение для фильтрации по категориям",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "sizes",
+            "in": "query",
+            "description": "Значение для фильтрации по размерам",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "colors",
+            "in": "query",
+            "description": "Значение для фильтрации по цвету",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "shops",
+            "in": "query",
+            "description": "Значение для фильтрации по брендам/магазинам",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "searchValue",
+            "in": "query",
+            "description": "Значение для поиска",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Значение для сортировки",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Значение для лимита",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Значение для смещения",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Метод успешно отработал",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/catalogPage"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          }
+        },
+        "tags": [
+          "Page"
+        ]
+      }
+    },
+    "/product-page/{product-id}": {
+      "get": {
+        "summary": "Страница товара",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/productId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Метод успешно отработал",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/productPage"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          }
+        },
+        "tags": [
+          "Page"
+        ]
+      }
+    },
+    "/shop-page/{shop-code}": {
+      "get": {
+        "summary": "Страница магазина/бренда",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/shopCode"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Метод успешно отработал",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/shopPage"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          }
+        },
+        "tags": [
+          "Page"
+        ]
+      }
+    },
+    "/product/{product-id}/user/{user-id}/add-to-cart": {
+      "post": {
+        "summary": "Добавление товара в корзину",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/productId"
+          },
+          {
+            "$ref": "#/components/parameters/userId"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Метод успешно отработал"
+          }
+        },
+        "tags": [
+          "Cart"
+        ]
+      }
+    },
+    "/user/{user-id}/cart": {
+      "get": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "Получение корзины пользователя",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Метод успешно отработал",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/cart"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          }
+        }
+      }
+    },
+    "/user/sign-in": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Авторизация",
+        "requestBody": {
+          "description": "Данные элемента страницы",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "phone": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Метод успешно отработал",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string"
+                    },
+                    "refreshToken": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          }
+        }
+      }
+    },
+    "/user/sign-up": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Регистрация",
+        "requestBody": {
+          "description": "Данные элемента страницы",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/userSignIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Метод успешно отработал",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Uuid"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          }
+        }
+      }
+    },
+    "/user/refresh": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Обновление токенов",
+        "requestBody": {
+          "description": "Данные элемента страницы",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "accessToken": {
+                    "type": "string"
+                  },
+                  "refreshToken": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Метод успешно отработал",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string"
+                    },
+                    "refreshToken": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          }
+        }
+      }
+    },
+    "/product/{product-id}/reviews": {
+      "get": {
+        "summary": "Получение отзывов на товар",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/productId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Метод успешно отработал",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/review"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          }
+        },
+        "tags": [
+          "Product"
+        ]
+      }
+    },
+    "/shop/{shop-code}/reviews": {
+      "get": {
+        "summary": "Получение отзывов на товары по магазину",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/shopCode"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Метод успешно отработал",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/review"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          }
+        },
+        "tags": [
+          "Shop"
+        ]
+      }
+    },
+    "/user/{user-id}/product{product-id}/reviews": {
+      "post": {
+        "tags": [
+          "Review"
+        ],
+        "summary": "Добавление отзыва",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/userId"
+          },
+          {
+            "$ref": "#/components/parameters/productId"
+          }
+        ],
+        "requestBody": {
+          "description": "Данные элемента страницы",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/review"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Метод успешно отработал",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "reviewId"
+                  ],
+                  "properties": {
+                    "reviewId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "Идентификатор отзыва",
+                      "example": "73e0bb5e-057a-427c-a5fb-3f3254f0f7df"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shop/sign-up": {
+      "post": {
+        "tags": [
+          "Shop"
+        ],
+        "summary": "Регистрация магазина/бренда",
+        "requestBody": {
+          "description": "Данные элемента страницы",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "$ref": "#/components/schemas/BinaryFile"
+                  },
+                  "shop": {
+                    "$ref": "#/components/schemas/shopSave"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Метод успешно отработал",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string"
+                    },
+                    "refreshToken": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          }
+        }
+      }
+    },
+    "/shop/{shop-id}/products": {
+      "post": {
+        "tags": [
+          "Shop"
+        ],
+        "summary": "Создание товара в магазине/бренде",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/shopId"
+          }
+        ],
+        "requestBody": {
+          "description": "Данные товара",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "$ref": "#/components/schemas/BinaryFile"
+                  },
+                  "product": {
+                    "$ref": "#/components/schemas/productSave"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Метод успешно отработал",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/product"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          }
+        }
+      }
+    },
+    "/shop/sign-in": {
+      "post": {
+        "tags": [
+          "Shop"
+        ],
+        "summary": "Авторизация магазина/бренда",
+        "requestBody": {
+          "description": "Данные для авторизации",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "phone": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Метод успешно отработал",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string"
+                    },
+                    "refreshToken": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "configurationCode": {
+        "name": "configuration-code",
+        "in": "path",
+        "description": "Код конфигурации",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/Sluggable"
+        }
+      },
+      "optionsCodes": {
+        "name": "optionsCodes",
+        "in": "query",
+        "description": "Коды настроек конфигураций",
+        "required": false,
+        "schema": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/Sluggable"
+          },
+          "uniqueItems": true
+        }
+      },
+      "formCode": {
+        "name": "form-code",
+        "in": "path",
+        "description": "Код формы",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/Sluggable"
+        }
+      },
+      "contentPageCode": {
+        "name": "content-page-code",
+        "in": "path",
+        "description": "Код контентной страницы",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/Sluggable"
+        }
+      },
+      "allowInactive": {
+        "name": "allowInactive",
+        "in": "query",
+        "description": "Позволить получение неактивной страницы",
+        "schema": {
+          "type": "boolean"
+        }
+      },
+      "menuCode": {
+        "name": "menu-code",
+        "in": "path",
+        "description": "Код меню",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/Sluggable"
+        }
+      },
+      "shopCode": {
+        "name": "shop-code",
+        "in": "path",
+        "description": "Код магазина/бренда",
+        "required": true,
+        "schema": {
+          "$ref": "#/components/schemas/Sluggable"
+        }
+      },
+      "productId": {
+        "name": "product-id",
+        "required": true,
+        "in": "path",
+        "description": "ID страницы",
+        "schema": {
+          "$ref": "#/components/schemas/Uuid"
+        }
+      },
+      "shopId": {
+        "name": "shop-id",
+        "required": true,
+        "in": "path",
+        "description": "ID страницы",
+        "schema": {
+          "$ref": "#/components/schemas/Uuid"
+        }
+      },
+      "userId": {
+        "name": "user-id",
+        "required": true,
+        "in": "path",
+        "description": "ID страницы",
+        "schema": {
+          "$ref": "#/components/schemas/Uuid"
+        }
+      }
+    },
+    "schemas": {
+      "BinaryFile": {
+        "type": "string",
+        "format": "binary",
+        "title": "Файл",
+        "description": "Загружаемый файл"
+      },
+      "OptionShort": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 50,
+            "description": "Код параметра конфигурации",
+            "example": "seo_text_title"
+          },
+          "value": {
+            "type": "string",
+            "description": "Значение параметра конфигурации",
+            "example": "Грузовики Вольво и Рено!"
+          }
+        }
+      },
+      "Sluggable": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+        "description": "Код элемента, отображаемый в uri",
+        "example": "sluggable-code"
+      },
+      "Uri": {
+        "type": "string",
+        "pattern": "^(/[a-z0-9]+(?:-[a-z0-9]+)*)*$",
+        "description": "Код элемента, отображаемый в uri",
+        "example": "/uri"
+      },
+      "content_v1HealthResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          }
+        },
+        "title": "Объект с информацией о работоспособности сервиса"
+      },
+      "mainPage": {
+        "title": "Главная страница",
+        "type": "object",
+        "properties": {
+          "headerMenu": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/menuItem"
+            }
+          },
+          "shopList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/shopInList"
+            }
+          },
+          "saleProductList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/productInList"
+            }
+          },
+          "popularProductList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/productInList"
+            }
+          }
+        }
+      },
+      "footer": {
+        "title": "футер страницы",
+        "type": "object",
+        "properties": {
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/links"
+            }
+          }
+        }
+      },
+      "catalogPage": {
+        "title": "Страница каталога товаров",
+        "type": "object",
+        "properties": {
+          "headerMenu": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/menuItem"
+            }
+          },
+          "filters": {
+            "$ref": "#/components/schemas/filters"
+          },
+          "productList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/productInList"
+            }
+          }
+        }
+      },
+      "filters": {
+        "title": "Фильтры и сортировка",
+        "type": "object",
+        "properties": {
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/category"
+            }
+          },
+          "sizes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/size"
+            }
+          },
+          "colors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/color"
+            }
+          },
+          "shops": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/shopInList"
+            }
+          },
+          "sortBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "цена по возрастанию",
+              "цена по убыванию"
+            ]
+          }
+        }
+      },
+      "category": {
+        "title": "категория товаров",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "футболки"
+          },
+          "subCategories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/category"
+            }
+          }
+        }
+      },
+      "size": {
+        "title": "Размер",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "xxl"
+          }
+        }
+      },
+      "color": {
+        "title": "Цвет",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "red"
+          },
+          "hex": {
+            "type": "string",
+            "example": "#ff0000"
+          }
+        }
+      },
+      "productPage": {
+        "title": "Страница товара",
+        "type": "object",
+        "properties": {
+          "headerMenu": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/menuItem"
+            }
+          },
+          "product": {
+            "$ref": "#/components/schemas/product"
+          },
+          "popularProductList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/productInList"
+            }
+          }
+        }
+      },
+      "shopPage": {
+        "title": "Страница товара",
+        "type": "object",
+        "properties": {
+          "headerMenu": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/menuItem"
+            }
+          },
+          "shop": {
+            "$ref": "#/components/schemas/shop"
+          },
+          "popularProductOfShopList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/productInList"
+            }
+          },
+          "footer": {
+            "$ref": "#/components/schemas/footer"
+          }
+        }
+      },
+      "menuItem": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "example": "About us"
+          },
+          "url": {
+            "$ref": "#/components/schemas/Uri"
+          },
+          "menuItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/menuItem"
+            }
+          }
+        }
+      },
+      "links": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "url": {
+            "$ref": "#/components/schemas/Uri"
+          }
+        }
+      },
+      "product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Front logo t-shirt"
+          },
+          "description": {
+            "type": "string",
+            "example": "Front logo t-shirt"
+          },
+          "composition": {
+            "type": "string",
+            "example": "100% хлопок, стирать в лаве"
+          },
+          "shop": {
+            "$ref": "#/components/schemas/shopInList"
+          },
+          "material": {
+            "type": "string",
+            "example": "хлопок"
+          },
+          "price": {
+            "type": "number",
+            "example": 4000.54
+          },
+          "sizes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/size"
+            }
+          },
+          "colors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/color"
+            }
+          },
+          "rating": {
+            "type": "number",
+            "example": 4.7
+          },
+          "quantityReviews": {
+            "type": "integer",
+            "example": 15
+          },
+          "sizesInformationImg": {
+            "$ref": "#/components/schemas/content_v1Media"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/content_v1Media"
+            }
+          }
+        }
+      },
+      "productSave": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Front logo t-shirt"
+          },
+          "description": {
+            "type": "string",
+            "example": "Front logo t-shirt"
+          },
+          "composition": {
+            "type": "string",
+            "example": "100% хлопок, стирать в лаве"
+          },
+          "shopId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "material": {
+            "type": "string",
+            "example": "хлопок"
+          },
+          "price": {
+            "type": "number",
+            "example": 4000.54
+          },
+          "sizeIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          },
+          "colors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          },
+          "gender": {
+            "type": "string",
+            "example": "male"
+          },
+          "categoryIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          }
+        }
+      },
+      "productInList": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Front logo t-shirt"
+          },
+          "shop": {
+            "$ref": "#/components/schemas/shopInList"
+          },
+          "price": {
+            "type": "number",
+            "example": 4000.54
+          },
+          "colors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "red",
+              "white",
+              "black"
+            ]
+          },
+          "sizes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/size"
+            }
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/content_v1Media"
+            }
+          }
+        }
+      },
+      "productInCart": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Front logo t-shirt"
+          },
+          "price": {
+            "type": "number",
+            "example": 4000.54
+          },
+          "quantity": {
+            "type": "integer",
+            "example": 3
+          },
+          "image": {
+            "$ref": "#/components/schemas/content_v1Media"
+          }
+        }
+      },
+      "shop": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "code": {
+            "$ref": "#/components/schemas/Sluggable"
+          },
+          "name": {
+            "type": "string",
+            "example": "Front logo t-shirt"
+          },
+          "description": {
+            "type": "string",
+            "example": "Front logo t-shirt"
+          },
+          "orderQuantity": {
+            "type": "integer",
+            "example": 55
+          },
+          "createdDate": {
+            "type": "string",
+            "example": "11.04.24"
+          },
+          "rating": {
+            "type": "number",
+            "example": 4.7
+          },
+          "quantityReviews": {
+            "type": "integer",
+            "example": 15
+          },
+          "mainImage": {
+            "$ref": "#/components/schemas/content_v1Media"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/content_v1Media"
+            }
+          },
+          "logo": {
+            "$ref": "#/components/schemas/content_v1Media"
+          }
+        }
+      },
+      "shopSave": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/Sluggable"
+          },
+          "name": {
+            "type": "string",
+            "example": "Front logo t-shirt"
+          },
+          "description": {
+            "type": "string",
+            "example": "Front logo t-shirt"
+          },
+          "orderQuantity": {
+            "type": "integer",
+            "example": 55
+          },
+          "createdDate": {
+            "type": "string",
+            "example": "11.04.24"
+          },
+          "rating": {
+            "type": "number",
+            "example": 4.7
+          },
+          "quantityReviews": {
+            "type": "integer",
+            "example": 15
+          }
+        }
+      },
+      "shopInList": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "code": {
+            "$ref": "#/components/schemas/Sluggable"
+          },
+          "name": {
+            "type": "string",
+            "example": "Front logo t-shirt"
+          },
+          "logo_image": {
+            "$ref": "#/components/schemas/content_v1Media"
+          }
+        }
+      },
+      "user": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "phone": {
+            "type": "string",
+            "example": 89180234335
+          },
+          "email": {
+            "type": "string",
+            "example": "kuzin.danil4@yandex.ru"
+          },
+          "name": {
+            "type": "string",
+            "example": "Генадий"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Васильев"
+          }
+        }
+      },
+      "userSignIn": {
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "string",
+            "example": 89180234335
+          },
+          "name": {
+            "type": "string",
+            "example": "Генадий"
+          },
+          "password": {
+            "type": "string",
+            "example": 123456
+          }
+        }
+      },
+      "userShort": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Генадий"
+          }
+        }
+      },
+      "review": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "rating": {
+            "type": "integer",
+            "example": 5
+          },
+          "date": {
+            "type": "string",
+            "example": "11.04.24"
+          },
+          "text": {
+            "type": "string",
+            "example": "Отличная футболка"
+          },
+          "user": {
+            "$ref": "#/components/schemas/userShort"
+          }
+        }
+      },
+      "saveReview": {
+        "type": "object",
+        "properties": {
+          "rating": {
+            "type": "integer",
+            "example": 5
+          },
+          "text": {
+            "type": "string",
+            "example": "Отличная футболка"
+          },
+          "userId": {
+            "$ref": "#/components/schemas/Uuid"
+          }
+        }
+      },
+      "cart": {
+        "type": "object",
+        "properties": {
+          "productList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/productInCart"
+            }
+          },
+          "quantity": {
+            "type": "integer",
+            "example": 5
+          },
+          "totalPrice": {
+            "type": "number",
+            "example": 43443.99
+          }
+        }
+      },
+      "content_v1Media": {
+        "title": "Объект медиа",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID",
+            "format": "uuid",
+            "example": "11111111-1111-1111-1111-111111111111"
+          },
+          "name": {
+            "type": "string",
+            "description": "Название файла",
+            "example": "filename"
+          },
+          "filename": {
+            "type": "string",
+            "description": "Название файла с форматом",
+            "example": "filename.jpeg"
+          },
+          "alt": {
+            "type": "string",
+            "description": "Значение alt",
+            "example": "Изображение"
+          },
+          "title": {
+            "type": "string",
+            "description": "Значение title",
+            "example": "Изображение"
+          },
+          "size": {
+            "type": "integer",
+            "description": "Размер файла",
+            "example": 6064580
+          },
+          "filepath": {
+            "type": "string",
+            "description": "Путь к файлу",
+            "example": "https://storage.yandexcloud.net/aerosite/user_media/tarasova.jpg"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Время создания",
+            "example": "2024-01-31T12:32:33.245Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Время последнего обновления",
+            "example": "2024-01-31T12:32:33.245Z"
+          },
+          "folderId": {
+            "type": "string",
+            "description": "ID папки",
+            "format": "uuid",
+            "example": "11111111-1111-1111-1111-111111111111"
+          }
+        }
+      },
+      "content_v1MediaShortList": {
+        "title": "Объект списка медиа (краткий)",
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/content_v1MediaShort"
+            }
+          }
+        }
+      },
+      "content_v1MediaShort": {
+        "title": "Объект медиа (краткий)",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "11111111-1111-1111-1111-111111111111"
+          },
+          "url": {
+            "type": "string",
+            "description": "URI картинки",
+            "format": "uri",
+            "example": "https://www.youloveit.ru/uploads/posts/2018-06/1528743981_youloveit_ru_sobaki_siba_inu02.jpg"
+          },
+          "alt": {
+            "type": "string",
+            "description": "Значение alt",
+            "example": "Изображение"
+          },
+          "title": {
+            "type": "string",
+            "description": "Значение title"
+          }
+        }
+      },
+      "content_v1BannerList": {
+        "title": "Объект баннера",
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "Баннеры",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/content_v1Banner"
+            }
+          }
+        }
+      },
+      "content_v1Banner": {
+        "title": "Объект баннера",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "id",
+            "type": "string",
+            "format": "uuid",
+            "example": "11111111-1111-1111-1111-111111111111"
+          },
+          "title": {
+            "description": "Заголовок баннера",
+            "type": "string",
+            "example": "Баннер на разводящей странице"
+          },
+          "link": {
+            "description": "Абсолютная ссылка для перехода с баннера",
+            "type": "string",
+            "example": "https://www.youloveit.ru/uploads/posts/2018-06/1528743981_youloveit_ru_sobaki_siba_inu02.jpg"
+          },
+          "image": {
+            "$ref": "#/components/schemas/content_v1Image"
+          },
+          "viewOnDesktop": {
+            "title": "Отображается на десктопе",
+            "type": "boolean"
+          },
+          "viewOnAdaptive": {
+            "title": "Отображается в адаптиве",
+            "type": "boolean"
+          }
+        }
+      },
+      "content_v1Image": {
+        "title": "Объект изображения",
+        "type": "object",
+        "properties": {
+          "desktop": {
+            "description": "URL картинки для десктопа",
+            "type": "string",
+            "example": "https://www.youloveit.ru/uploads/posts/2018-06/1528743981_youloveit_ru_sobaki_siba_inu02.jpg"
+          },
+          "desktop2x": {
+            "description": "URL картинки для десктопа",
+            "type": "string",
+            "example": "https://www.youloveit.ru/uploads/posts/2018-06/1528743981_youloveit_ru_sobaki_siba_inu02.jpg"
+          },
+          "mobile": {
+            "description": "URL картинки для мобилки",
+            "type": "string",
+            "example": "https://www.youloveit.ru/uploads/posts/2018-06/1528743981_youloveit_ru_sobaki_siba_inu02.jpg"
+          },
+          "mobile2x": {
+            "description": "URL картинки для мобилки",
+            "type": "string",
+            "example": "https://www.youloveit.ru/uploads/posts/2018-06/1528743981_youloveit_ru_sobaki_siba_inu02.jpg"
+          }
+        }
+      },
+      "runtimeError": {
+        "title": "Объект ошибки",
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          },
+          "debug": {
+            "type": "string"
+          }
+        }
+      },
+      "form_v1FormResultValue": {
+        "type": "object",
+        "properties": {
+          "formFieldCode": {
+            "type": "string"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Uuid": {
+        "description": "uuid",
+        "type": "string",
+        "format": "uuid",
+        "example": "11111111-1111-1111-1111-111111111111"
+      },
+      "Error": {
+        "required": [
+          "applicationErrorCode",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "applicationErrorCode": {
+            "type": "string",
+            "description": "Код ошибки, к которому привел вызов метода\n",
+            "example": "tooManyRequests"
+          },
+          "message": {
+            "type": "string",
+            "description": "Человекочитаемое сообщение об ошибке\n",
+            "example": "Ошибка отправки СМС-сообщения"
+          },
+          "debug": {
+            "type": "string",
+            "description": "Дополнительная отладочная информация\n",
+            "example": "org.postgresql.util.PSQLException: ERROR: canceling statement due to user request"
+          }
+        },
+        "description": "Описание ошибки для всех методов"
+      }
+    },
+    "responses": {
+      "400Error": {
+        "description": "Ошибочный запрос, например, отсутствует один из параметров",
+        "content": {
+          "application/json": {
+            "example": {
+              "applicationErrorCode": "Not Found",
+              "message": "Элемент не найден.",
+              "debug": "some element not found"
+            },
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "404Error": {
+        "description": "Запрашиваемый ресурс не найден",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "409Error": {
+        "description": "Ресурс, создаваемый методом POST, уже существует",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "500Error": {
+        "description": "Серверная ошибка",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}
