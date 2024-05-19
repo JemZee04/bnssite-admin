@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { beekneesApi } from "./beekneesApi";
+import { credentialReducer } from "./slices/credentialSlice";
 
 
 
 const rootReducer = combineReducers({
+    credentialReducer,
     [beekneesApi.reducerPath]: beekneesApi.reducer
 });
 

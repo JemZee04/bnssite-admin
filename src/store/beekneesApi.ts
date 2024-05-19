@@ -117,6 +117,9 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/shop/sign-up`,
         method: "POST",
+        headers: {
+          'Content-Type': 'multipart/form-data;',
+        },
         body: queryArg.body,
       }),
     }),
@@ -199,9 +202,9 @@ export type GetUserByUserIdCartApiArg = {
 };
 export type PostUserSignInApiResponse =
   /** status 200 Метод успешно отработал */ {
-    accessToken?: string;
-    refreshToken?: string;
-  };
+  accessToken?: string;
+  refreshToken?: string;
+};
 export type PostUserSignInApiArg = {
   /** Данные элемента страницы */
   body: {
@@ -217,9 +220,9 @@ export type PostUserSignUpApiArg = {
 };
 export type PostUserRefreshApiResponse =
   /** status 200 Метод успешно отработал */ {
-    accessToken?: string;
-    refreshToken?: string;
-  };
+  accessToken?: string;
+  refreshToken?: string;
+};
 export type PostUserRefreshApiArg = {
   /** Данные элемента страницы */
   body: {
@@ -241,9 +244,9 @@ export type GetShopByShopCodeReviewsApiArg = {
 };
 export type PostUserByUserIdProductandProductIdReviewsApiResponse =
   /** status 201 Метод успешно отработал */ {
-    /** Идентификатор отзыва */
-    reviewId: string;
-  };
+  /** Идентификатор отзыва */
+  reviewId: string;
+};
 export type PostUserByUserIdProductandProductIdReviewsApiArg = {
   /** ID страницы */
   "user-id": Uuid;
@@ -254,9 +257,9 @@ export type PostUserByUserIdProductandProductIdReviewsApiArg = {
 };
 export type PostShopSignUpApiResponse =
   /** status 200 Метод успешно отработал */ {
-    accessToken?: string;
-    refreshToken?: string;
-  };
+  accessToken?: string;
+  refreshToken?: string;
+};
 export type PostShopSignUpApiArg = {
   /** Данные элемента страницы */
   body: {
@@ -277,9 +280,9 @@ export type PostShopByShopIdProductsApiArg = {
 };
 export type PostShopSignInApiResponse =
   /** status 200 Метод успешно отработал */ {
-    accessToken?: string;
-    refreshToken?: string;
-  };
+  accessToken?: string;
+  refreshToken?: string;
+};
 export type PostShopSignInApiArg = {
   /** Данные для авторизации */
   body: {

@@ -26,10 +26,12 @@ const beforeUpload = (file: FileType) => {
 
 export type UploadBoxProps = {
     onLoad: (image: File) => void,
-    file: File | null
+    file: File | null,
+    width?: number | 'expand',
+    height?: number | 'expand'
 }
 
-export const UploadBox: React.FC<UploadBoxProps> = ({ onLoad, file }) => {
+export const UploadBox: React.FC<UploadBoxProps> = ({ onLoad, file, width = 'expand', height = 'expand' }) => {
 
     const [loading, setLoading] = useState(false);
 
@@ -52,8 +54,8 @@ export const UploadBox: React.FC<UploadBoxProps> = ({ onLoad, file }) => {
     };
 
     //@ts-ignore
-    const dummyRequest = async (args:  UploadRequestOption<any>) => {
-        const {onSuccess} = args;
+    const dummyRequest = async (args: UploadRequestOption<any>) => {
+        const { onSuccess } = args;
         setLoading(true);
         onSuccess("ok");
     }
@@ -68,14 +70,24 @@ export const UploadBox: React.FC<UploadBoxProps> = ({ onLoad, file }) => {
     return (
         <Upload
             name="avatar"
-            listType="picture-card"
+            listType='picture-card'
             className="avatar-uploader"
+
             showUploadList={false}
             beforeUpload={beforeUpload}
             onChange={handleChange}
             customRequest={dummyRequest}
         >
-            {image ? <img src={image.toString()} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+            {image
+                ? <img
+                    src={image.toString()}
+                    alt="avatar"
+                    style={{
+                        width: typeof width == 'number' ? width : '100%',
+                        height: typeof height == 'number' ? height : '100%'
+                    }} />
+                : uploadButton
+            }
         </Upload>
     )
 }
