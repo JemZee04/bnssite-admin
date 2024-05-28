@@ -1,0 +1,21 @@
+.CardDiv{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.ContentDiv{
+    display: flex;
+    justify-content: flex-start;
+    gap: 5px;
+    align-items: center;
+}
+
+.CardImage{
+    width: 100px;
+}
+
+.CardTitle{
+    font-weight: 600;
+}

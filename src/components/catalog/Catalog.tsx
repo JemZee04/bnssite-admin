@@ -7,6 +7,7 @@ import { useGetCatalogPageQuery } from "../../store/beekneesApi";
 import ProductCard from "../productCard/ProducrCard";
 import { Button, Modal } from "antd";
 import CreateItem from "../createItem/CreateItem";
+import ListOrders from "../listOrders/ListOrders";
 
 export type FilterType = 'add' | 'delete' | 'set';
 
@@ -67,8 +68,8 @@ const Catalog: React.FC = () => {
                 </div>
 
                 <div className={styles.WrapPage}>
+                    <Button onClick={() => setOpen(true)} >Добавить предмет</Button>
                     <div className={styles.WrapListProduct}>
-                        <Button onClick={() => setOpen(true)} >Добавить предемет</Button>
                         {
                             data?.productList?.map((item, index) => {
                                 return <ProductCard
@@ -81,6 +82,7 @@ const Catalog: React.FC = () => {
                         }
                     </div>
                 </div>
+                <ListOrders/>
                 <Modal open={open} onCancel={() => setOpen(false)} footer = {null}>
                     <CreateItem refetch={refetch} close={() => setOpen(false)}/>
                 </Modal>

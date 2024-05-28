@@ -189,7 +189,7 @@ const CreateItem: React.FC<CreateItemProps> = ({ refetch, close }) => {
 
     const sendHandler = () => {
         axios.postForm(
-            `http://localhost:7070/api/v1/bns/shop/${brandId ?? 1}/products`,
+            `https://teaching-perfect-antelope.ngrok-free.app/api/v1/bns/shop/${brandId ?? 1}/products`,
             {
                 file: brandLogo,
                 product: {

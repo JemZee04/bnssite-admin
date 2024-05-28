@@ -35,7 +35,7 @@ export const LoginPage: React.FC = () => {
 
     return (
         <Space size={20} direction='vertical' style={{ width: '100%' }}>
-            <Input placeholder='Номер телефона' value={phone} onChange={buildHandleChange(setPhone)} />
+            <Input placeholder='Почта' value={phone} onChange={buildHandleChange(setPhone)} />
             <Input placeholder="Пароль" value={password} onChange={buildHandleChange(setPassword)} />
             <Button onClick={onLogin}>Войти</Button>
         </Space>

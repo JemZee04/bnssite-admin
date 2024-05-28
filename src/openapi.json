@@ -326,6 +326,9 @@
                     },
                     "refreshToken": {
                       "type": "string"
+                    },
+                    "userProfile": {
+                      "$ref": "#/components/schemas/User"
                     }
                   }
                 }
@@ -361,7 +364,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Uuid"
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string"
+                    },
+                    "refreshToken": {
+                      "type": "string"
+                    },
+                    "userProfile": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
                 }
               }
             }
@@ -572,6 +586,9 @@
                     },
                     "refreshToken": {
                       "type": "string"
+                    },
+                    "shopProfile": {
+                      "$ref": "#/components/schemas/ShopProfile"
                     }
                   }
                 }
@@ -669,8 +686,173 @@
                     },
                     "refreshToken": {
                       "type": "string"
+                    },
+                    "shopProfile": {
+                      "$ref": "#/components/schemas/ShopProfile"
                     }
                   }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          }
+        }
+      }
+    },
+    "/user/orders/users/{user-id}": {
+      "get": {
+        "summary": "Get user orders",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user-id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "ID of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new user order",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user-id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "ID of the user"
+          }
+        ],
+        "requestBody": {
+          "description": "Order details",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrder"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Uuid"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          }
+        }
+      }
+    },
+    "/user/orders/shops/{shop-id}": {
+      "get": {
+        "summary": "Get user orders for a shop",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "shop-id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "ID of the shop"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404Error"
+          }
+        }
+      }
+    },
+    "/user/orders/{order-id}/status": {
+      "patch": {
+        "summary": "Update the status of an order",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "order-id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "ID of the order"
+          }
+        ],
+        "requestBody": {
+          "description": "Order status update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
                 }
               }
             }
@@ -823,6 +1005,124 @@
           }
         },
         "title": "Объект с информацией о работоспособности сервиса"
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "totalPrice": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "productItems": {
+            "$ref": "#/components/schemas/ProductInOrder"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "ProductInOrder": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "T-Shirt"
+          },
+          "shop": {
+            "$ref": "#/components/schemas/shop"
+          },
+          "price": {
+            "type": "number",
+            "example": 100
+          },
+          "colors": {
+            "$ref": "#/components/schemas/color"
+          },
+          "sizes": {
+            "$ref": "#/components/schemas/size"
+          },
+          "images": {
+            "$ref": "#/components/schemas/content_v1Media"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "phone": {
+            "type": "string",
+            "example": 89180234335
+          },
+          "email": {
+            "type": "string",
+            "example": "9vL0d@example.com"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "Smith"
+          },
+          "name": {
+            "type": "string",
+            "example": "John"
+          },
+          "gender": {
+            "type": "string",
+            "example": "man"
+          }
+        }
+      },
+      "CreateOrder": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "totalPrice": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string"
+          },
+          "productItems": {
+            "$ref": "#/components/schemas/ProductInCreateOrder"
+          }
+        }
+      },
+      "ProductInCreateOrder": {
+        "type": "object",
+        "properties": {
+          "productItemId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "sizeId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "colorId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "shopId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "quantity": {
+            "type": "integer"
+          }
+        }
       },
       "mainPage": {
         "title": "Главная страница",
@@ -1064,16 +1364,8 @@
             "type": "string",
             "example": "Front logo t-shirt"
           },
-          "composition": {
-            "type": "string",
-            "example": "100% хлопок, стирать в лаве"
-          },
           "shop": {
-            "$ref": "#/components/schemas/shopInList"
-          },
-          "material": {
-            "type": "string",
-            "example": "хлопок"
+            "$ref": "#/components/schemas/shopWithProduct"
           },
           "price": {
             "type": "number",
@@ -1090,6 +1382,10 @@
             "items": {
               "$ref": "#/components/schemas/color"
             }
+          },
+          "gender": {
+            "type": "string",
+            "example": "male"
           },
           "rating": {
             "type": "number",
@@ -1180,13 +1476,8 @@
           "colors": {
             "type": "array",
             "items": {
-              "type": "string"
-            },
-            "example": [
-              "red",
-              "white",
-              "black"
-            ]
+              "$ref": "#/components/schemas/color"
+            }
           },
           "sizes": {
             "type": "array",
@@ -1272,6 +1563,37 @@
           }
         }
       },
+      "ShopProfile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "code": {
+            "$ref": "#/components/schemas/Sluggable"
+          },
+          "name": {
+            "type": "string",
+            "example": "Front logo t-shirt"
+          },
+          "description": {
+            "type": "string",
+            "example": "Front logo t-shirt"
+          },
+          "orderQuantity": {
+            "type": "integer",
+            "example": 55
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "11.04.24"
+          },
+          "rating": {
+            "type": "number",
+            "example": 4.7
+          }
+        }
+      },
       "shopSave": {
         "type": "object",
         "properties": {
@@ -1290,7 +1612,7 @@
             "type": "integer",
             "example": 55
           },
-          "createdDate": {
+          "createdAt": {
             "type": "string",
             "example": "11.04.24"
           },
@@ -1319,6 +1641,40 @@
           },
           "logo_image": {
             "$ref": "#/components/schemas/content_v1Media"
+          }
+        }
+      },
+      "shopWithProduct": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "code": {
+            "$ref": "#/components/schemas/Sluggable"
+          },
+          "name": {
+            "type": "string",
+            "example": "Front logo t-shirt"
+          },
+          "logo_image": {
+            "$ref": "#/components/schemas/content_v1Media"
+          },
+          "description": {
+            "type": "string",
+            "example": "Front logo t-shirt"
+          },
+          "orderQuantity": {
+            "type": "integer",
+            "example": 55
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "11.04.24"
+          },
+          "rating": {
+            "type": "number",
+            "example": 4.7
           }
         }
       },

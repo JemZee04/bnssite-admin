@@ -43,7 +43,7 @@ const credentialSlice = createSlice({
             builder.addCase(signUpThunk.fulfilled, (state, action) => {
                 const payload = action.payload;
                 state.signUpStatus = ERequestStatus.SUCCESSFUL;
-                state.token = payload.data.accessToken ?? '';
+                state.token = payload.accessToken ?? '';
             }),
             builder.addCase(signUpThunk.rejected, (state, action) => {
                 state.error = action.error.message ?? '';
@@ -53,9 +53,16 @@ const credentialSlice = createSlice({
                 state.signInStatus = ERequestStatus.LOADING;
             }),
             builder.addCase(signInThunk.fulfilled, (state, action) => {
+                console.log('FULLFILED');
+                
                 const payload = action.payload;
                 state.signInStatus = ERequestStatus.SUCCESSFUL;
                 state.token = payload.accessToken ?? '';
+                state.shop = payload.shopProfile ?? null;
+            }),
+            builder.addCase(signInThunk.rejected, (state, action) => {
+                console.log('ERROR ON LOGIN', action.error);
+                
             })
     }
 })

@@ -1,7 +1,6 @@
 .DivCard {
     position: relative;
     width: 430px;
-    height: 550px;
     display: flex;
     flex-direction: column;
     gap: 10px;
