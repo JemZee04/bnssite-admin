@@ -588,7 +588,7 @@ export type ProductInOrder = {
   price?: number;
   colors?: Цвет;
   sizes?: Размер;
-  images?: ОбъектМедиа;
+  images?: ОбъектМедиа[];
   quantity?: number;
 };
 export type Order = {

@@ -55,7 +55,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
                             price: item.price,
                             colors: item.colors,
                             sizes: item.sizes,
-                            images: item.images?.filepath
+                            images: item.images
                         }} count={item.quantity ?? 1} />
                     })
                 }
