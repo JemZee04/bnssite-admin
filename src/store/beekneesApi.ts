@@ -176,8 +176,7 @@ const injectedRtkApi = api.injectEndpoints({
         method: "PATCH",
         body: queryArg.body,
       }),
-      //@ts-ignore
-      providesTags: ["Order"]
+      invalidatesTags: ["Order"]
     }),
   }),
   overrideExisting: false,

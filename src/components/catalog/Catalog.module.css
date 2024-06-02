@@ -7,4 +7,5 @@
     display: flex;
     flex-wrap: wrap;
     gap: 18px;
+    padding: 20px 0;
 }

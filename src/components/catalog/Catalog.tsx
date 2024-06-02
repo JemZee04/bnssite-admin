@@ -82,7 +82,6 @@ const Catalog: React.FC = () => {
                         }
                     </div>
                 </div>
-                <ListOrders/>
                 <Modal open={open} onCancel={() => setOpen(false)} footer = {null}>
                     <CreateItem refetch={refetch} close={() => setOpen(false)}/>
                 </Modal>

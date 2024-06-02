@@ -27,19 +27,22 @@ const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
 
     return (
         <div style={{padding: "10px 0"}}>
-                <div style={{display: "flex", justifyContent: "space-between"}}>
+                <div style={{display: "flex", justifyContent: "flex-start", gap: "20px"}}>
                     <div>
+                        <div style={{display: "flex", gap: "35px"}}>
                         <p style={{fontWeight: 600}}>{`Заказ №${order.id}`}</p>
+                            <div style={{display: "flex", gap: "15px", alignItems: "center"}}>
+                                <p>Статус заказа</p>
+                                <Select
+                                    defaultValue={options.find(item => item.value === order.status)?.value ?? "Заказ оформлен"}
+                                    style={{ width: 200 }}
+                                    onChange={handleChange}
+                                    options={options}
+                                />
+                            </div>
+                        </div>
+                        
                         <p>{`Стоимость ${order.totalPrice} ₽`}</p>
-                    </div>
-                    <div>
-                        <p>Статус заказа</p>
-                        <Select
-                            defaultValue={options.find(item => item.value === order.status)?.value ?? "Заказ оформлен"}
-                            style={{ width: 200 }}
-                            onChange={handleChange}
-                            options={options}
-                        />
                     </div>
             </div>
             <>
