@@ -16,6 +16,7 @@ export const HomePage = () => {
                 <div style={{height: "64px", display: "flex", gap: "15px", alignItems: "center"}}>
                     <Button onClick={() => navigate(HOME_PATH)}>Продукты</Button>
                     <Button onClick={() => navigate(ORDER_PATH)}>Заказы</Button>
+                    <Button>Редактировать информацию о магазине</Button>
                 </div>
             </Header>
             <Content>

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { ProductInList } from "../../store/beekneesApi";
 import styles from "./ProductCard.module.css";
 import NO_IMAGE from '../../assets/images/no_image.png';
-import { Image } from "antd";
+import { Button, Image } from "antd";
 
 type ProductCardProps = {
     item: ProductInList,
@@ -37,7 +37,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ item, addToCartButton, addToF
                     <p className={styles.CardContent}>{item.shop?.name}</p>
                     {addToCartButton}
                 </div>
-                
+                <div style={{display: "flex", justifyContent: "space-between"}}>
+                    <Button>Редактировать</Button>
+                    <Button>Удалить</Button>
+                </div>
             </div>
         </div>
     );
